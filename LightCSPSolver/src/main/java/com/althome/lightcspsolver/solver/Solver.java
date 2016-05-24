@@ -6,6 +6,7 @@
 package com.althome.lightcspsolver.solver;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
+import com.althome.lightcspsolver.solver.search.Search;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
 
@@ -20,12 +21,17 @@ public class Solver {
     
     
     public Solver() {
-        
+        this.variables = new ArrayList<>();
+        this.constraints = new ArrayList<>();
     }
     
     public void post(Constraint constraint ) {
         this.variables.addAll(constraint.getVariables());
         this.constraints.add(constraint);
+    }
+    
+    public boolean solver() {
+        return false;
     }
     
     public boolean isASolution() {

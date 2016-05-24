@@ -28,6 +28,8 @@ public interface Variable {
     
     public int getUpperBound();
     
+    public int getValue();
+    
     public boolean isInstantiated();
     
     public int getCardinality();
@@ -35,5 +37,7 @@ public interface Variable {
     public Domain getDomain();
     
     public void addConstraint(Constraint c);
+    
+    public Variable clone();
     
 }

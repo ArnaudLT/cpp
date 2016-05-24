@@ -5,7 +5,6 @@
  */
 package com.althome.lightcspsolver.solver.constraints;
 
-import com.althome.lightcspsolver.solver.constraints.propagators.PropEqualBC;
 import com.althome.lightcspsolver.solver.constraints.propagators.Propagator;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
@@ -14,30 +13,29 @@ import java.util.ArrayList;
  *
  * @author Arnaud
  */
-public class Equal implements Constraint {
+public class EqualXY implements Constraint {
 
     private ArrayList<Variable> variables;
     private ArrayList<Propagator> propagators;
     
-    public Equal(ArrayList<Variable> variables) {
-        this.variables = variables;
+    public EqualXY(Variable x, Variable y) {
+        this.variables = new ArrayList<>();
+        this.variables.add(x);
+        this.variables.add(y);
         this.propagators = new ArrayList<>();
-        this.propagators.add(new PropEqualBC(variables));
-        for ( Variable v : variables ) {
-            v.addConstraint(this);
-        }
+        //this.propagators.add(null);
     }
     
     @Override
     public ArrayList<Variable> getVariables() {
-        return this.variables;
+        return this.variables; 
     }
 
     @Override
     public ArrayList<Propagator> getPropagators() {
         return this.propagators;
     }
-    
+
     @Override
     public void filter() {
         for ( Propagator p : this.propagators ) {
@@ -47,13 +45,9 @@ public class Equal implements Constraint {
 
     @Override
     public boolean isSatisfied() {
-        Variable vprec = null;
-        for ( Variable v : this.variables ) {
-            if ( !v.isInstantiated() || 
-                    ( vprec != null && v.getLowerBound() != vprec.getLowerBound()) )
-                return false;
-        }
-        return true;
+        return ( this.variables.get(0).isInstantiated() 
+              && this.variables.get(1).isInstantiated() 
+              && this.variables.get(0).getValue() == this.variables.get(1).getValue() );
     }
     
 }

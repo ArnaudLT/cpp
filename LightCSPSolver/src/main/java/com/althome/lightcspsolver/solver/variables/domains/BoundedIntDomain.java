@@ -81,6 +81,11 @@ public class BoundedIntDomain implements Domain {
         return Math.max(0, this.upperBound - this.lowerBound + 1);
     }
     
+    @Override
+    public Domain clone() {
+        return new BoundedIntDomain(this.lowerBound, this.lowerBound);
+    }
+    
     public String toString() {
         StringBuilder dom = new StringBuilder("[ ");
         dom.append(this.lowerBound).append(",").append(this.upperBound);

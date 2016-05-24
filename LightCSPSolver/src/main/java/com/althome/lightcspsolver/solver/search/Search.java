@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.althome.lightcspsolver.samples;
-
+package com.althome.lightcspsolver.solver.search;
 
 /**
  *
  * @author Arnaud
  */
-public class Manual {
+public class Search {
     
-    public static void main(String[] args) {
-
-        
-
-    }
+    
     
 }

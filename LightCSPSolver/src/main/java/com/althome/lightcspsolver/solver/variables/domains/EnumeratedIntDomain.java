@@ -21,6 +21,10 @@ public class EnumeratedIntDomain implements Domain {
         this.values = new BitSet(maxValue-minValue+1);
         this.values.set(0,maxValue-minValue+1);
     }
+
+    private EnumeratedIntDomain() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     @Override
     public void instantiateTo(int value) {
@@ -73,6 +77,14 @@ public class EnumeratedIntDomain implements Domain {
     @Override
     public int getCardinality() {
         return this.values.cardinality();
+    }
+    
+    @Override
+    public Domain clone() {
+        EnumeratedIntDomain clone = new EnumeratedIntDomain();
+        clone.offset = this.offset;
+        clone.values = (BitSet) this.values.clone();
+        return clone;
     }
     
     private boolean isAValidValue(int v) {

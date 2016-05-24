@@ -22,6 +22,10 @@ public class IntVariable implements Variable {
     private Domain domain;
     private ArrayList<Constraint> constaints;
     
+    private IntVariable() {
+        
+    }
+    
     public IntVariable(int id, String name, int minValue, int maxValue, DomainType type) {
         this.id = id;
         this.name = name;
@@ -77,6 +81,13 @@ public class IntVariable implements Variable {
     public int getUpperBound() {
         return this.domain.getUpperBound();
     }
+    
+    @Override
+    public int getValue() {
+        assert ( this.isInstantiated() );
+        return this.domain.getLowerBound();
+    }
+    
     @Override    
     public int getCardinality() {
         return this.domain.getCardinality();
@@ -90,6 +101,16 @@ public class IntVariable implements Variable {
     @Override
     public void addConstraint(Constraint c) {
         this.constaints.add(c);
+    }
+    
+    @Override
+    public IntVariable clone() {
+        IntVariable clone = new IntVariable();
+        clone.id = this.id;
+        clone.name = this.name;
+        clone.constaints = this.constaints;
+        clone.domain = this.domain.clone();
+        return clone;
     }
     
     public int getId() {

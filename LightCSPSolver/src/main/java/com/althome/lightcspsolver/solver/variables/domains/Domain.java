@@ -27,4 +27,6 @@ public interface Domain {
 
     public int getCardinality();
     
+    public Domain clone();
+    
 }
