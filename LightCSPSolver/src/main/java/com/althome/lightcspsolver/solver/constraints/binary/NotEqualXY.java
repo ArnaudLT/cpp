@@ -39,10 +39,12 @@ public class NotEqualXY implements Constraint {
     }
 
     @Override
-    public void filter() {
+    public boolean filter() {
+        boolean impact = false;
         for ( Propagator p : this.propagators ) {
-            p.propagate();
+            impact |= p.propagate();
         }
+        return impact;
     }
 
     @Override

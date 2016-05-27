@@ -11,6 +11,6 @@ package com.althome.lightcspsolver.solver.constraints;
  */
 public interface Propagator {
     
-    public void propagate();
+    public boolean propagate();
     
 }

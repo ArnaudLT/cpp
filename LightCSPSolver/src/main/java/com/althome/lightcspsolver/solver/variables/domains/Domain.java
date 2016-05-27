@@ -31,4 +31,8 @@ public interface Domain {
     
     public boolean isEmpty();
     
+    public boolean contains(int value);
+    
+    public int nextValue(int value);
+    
 }

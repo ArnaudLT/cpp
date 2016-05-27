@@ -25,7 +25,7 @@ public class GreaterXY implements Constraint {
         this.variables.add(x);
         this.variables.add(y);
         this.propagators = new ArrayList<>();
-        //this.propagators.add(null);
+        this.propagators.add(new PropGreaterXY(variables));
     }
     
     @Override
@@ -39,10 +39,12 @@ public class GreaterXY implements Constraint {
     }
 
     @Override
-    public void filter() {
+    public boolean filter() {
+        boolean impact = false;
         for ( Propagator p : this.propagators ) {
-            p.propagate();
+            impact |= p.propagate();
         }
+        return impact;
     }
 
     @Override

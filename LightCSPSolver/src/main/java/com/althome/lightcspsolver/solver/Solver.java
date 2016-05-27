@@ -27,12 +27,14 @@ public class Solver {
     private VariableSelector variableSelector;
     private ValueSelector valueSelector;
     
+    private ArrayList<Domain> backup;
     
     public Solver() {
         this.variables = new ArrayList<>();
         this.constraints = new ArrayList<>();
         this.variableSelector = new InputOrderVariableSelector();
         this.valueSelector = new MinValueSelector();
+        this.backup = new ArrayList<>();
     }
     
     public void addVariable(Variable variable) {
@@ -57,10 +59,11 @@ public class Solver {
     
     private Sat solve(int dig) {
 
-StringBuilder s = new StringBuilder();
-for (int i=0; i<dig; i++) { s.append(" "); }
-System.out.println(s.toString()+this.toStringOneLine());
+//StringBuilder s = new StringBuilder();
+//for (int i=0; i<dig; i++) { s.append(" "); }
+//System.out.println(s.toString()+this.toStringOneLine());
         this.filter();
+//System.out.println("Propag => "+this.toStringOneLine());
         Sat status = this.isASolution();
         if (status == Sat.SAT) {
 System.out.println(this.toStringOneLine());
@@ -74,25 +77,44 @@ System.out.println(this.toStringOneLine());
         if ((var = this.variableSelector.getVariable(this.variables)) != null) {
             Domain backtrackPrevVar = var.getDomain().clone();
             while ((value = this.valueSelector.getValue(var)) != null) {
-                Domain domBackup = var.getDomain().clone();
+                this.pushWorld();
                 var.instantiateTo(value);
                 Sat solved = this.solve(dig++);
                 if (solved == Sat.SAT) {
                     return Sat.SAT;
                 }
-                var.restoreDomain(domBackup);
+                this.popWorld();
                 var.removeValues(value);
             }
             var.restoreDomain(backtrackPrevVar);
         }
         return Sat.UNSAT;
     }
-            
+    
+    private void pushWorld() {
+        this.backup.clear();
+        for ( Variable v : this.variables ) {
+            this.backup.add(v.getDomain().clone());
+        }
+    }
+    
+    private void popWorld() {
+        for ( int i=0; i< this.variables.size(); i++ ) {
+            this.variables.get(i).restoreDomain(this.backup.get(i));
+        }
+        this.backup.clear();
+    }
             
     private void filter() {
-        for ( Constraint c : this.constraints ) {
-            c.filter();
-        }
+        boolean impact;
+        do {
+            impact = false;
+            for ( Constraint c : this.constraints ) {
+                impact |= c.filter();
+            }
+        } while (impact);
+        
+        
     }
     
     private boolean isALeaf() {

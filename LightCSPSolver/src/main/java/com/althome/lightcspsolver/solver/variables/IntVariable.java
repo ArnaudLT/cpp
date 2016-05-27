@@ -6,7 +6,6 @@
 package com.althome.lightcspsolver.solver.variables;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
-import com.althome.lightcspsolver.solver.variables.domains.BoundedIntDomain;
 import com.althome.lightcspsolver.solver.variables.domains.EnumeratedIntDomain;
 import com.althome.lightcspsolver.solver.variables.domains.Domain;
 import java.util.ArrayList;
@@ -30,9 +29,6 @@ public class IntVariable implements Variable {
         switch (type) {
             case ENUMERATED : 
                 this.domain = new EnumeratedIntDomain(minValue, maxValue);
-                break;
-            case BOUNDED :
-                this.domain = new BoundedIntDomain(minValue, maxValue);
                 break;
             default :
                 this.domain = new EnumeratedIntDomain(minValue, maxValue);
@@ -131,6 +127,16 @@ public class IntVariable implements Variable {
     @Override
     public boolean isEmpty() {
         return this.domain.isEmpty();
+    }
+
+    @Override
+    public boolean contains(int value) {
+        return this.domain.contains(value);
+    }
+
+    @Override
+    public int nextValue(int value) {
+        return this.domain.nextValue(value);
     }
     
 }

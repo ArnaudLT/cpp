@@ -5,7 +5,6 @@
  */
 package com.althome.lightcspsolver.solver.constraints.ternary;
 
-import com.althome.lightcspsolver.solver.constraints.binary.*;
 import com.althome.lightcspsolver.solver.Sat;
 import com.althome.lightcspsolver.solver.constraints.Constraint;
 import com.althome.lightcspsolver.solver.constraints.Propagator;
@@ -40,10 +39,12 @@ public class Min implements Constraint {
     }
 
     @Override
-    public void filter() {
+    public boolean filter() {
+        boolean impact = false;
         for ( Propagator p : this.propagators ) {
-            p.propagate();
+            impact |= p.propagate();
         }
+        return impact;
     }
 
     @Override

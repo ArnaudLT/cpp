@@ -17,7 +17,7 @@ public interface Constraint {
     
     public ArrayList<Variable> getVariables();
     public ArrayList<Propagator> getPropagators();
-    public void filter();
+    public boolean filter();
     public Sat isSatisfied();
     
 }

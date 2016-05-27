@@ -44,4 +44,8 @@ public interface Variable {
     
     public boolean isEmpty();
     
+    public boolean contains(int value);
+    
+    public int nextValue(int value);
+    
 }

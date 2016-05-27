@@ -106,5 +106,26 @@ public class EnumeratedIntDomain implements Domain {
     public boolean isEmpty() {
         return this.values.isEmpty();
     }
+    
+    @Override
+    public boolean contains(int value) {
+        return this.isAValidValue(value) && this.values.get(value-this.offset);
+    }
 
+    public BitSet getValues() {
+        return this.values;
+    }
+
+    @Override
+    public int nextValue(int value) {
+        int res = this.values.nextSetBit(value+1-this.offset) + this.offset;
+        if (  res < this.offset ) {
+            return Integer.MAX_VALUE;
+        } else {
+            return res;
+        }
+    }
+
+    
+    
 }

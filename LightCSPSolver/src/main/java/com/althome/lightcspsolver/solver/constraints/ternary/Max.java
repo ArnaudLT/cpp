@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.althome.lightcspsolver.solver.constraints.binary;
+package com.althome.lightcspsolver.solver.constraints.ternary;
 
 import com.althome.lightcspsolver.solver.Sat;
 import com.althome.lightcspsolver.solver.constraints.Constraint;
@@ -12,20 +12,20 @@ import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
 
 /**
- * X <= Y
+ * X = MIN(Y,Z)
  * @author Arnaud
  */
-public class LessOrEqualXY implements Constraint {
+public class Max implements Constraint {
 
     private ArrayList<Variable> variables;
     private ArrayList<Propagator> propagators;
     
-    public LessOrEqualXY(Variable x, Variable y) {
+    public Max(Variable x, Variable y, Variable z) {
         this.variables = new ArrayList<>();
         this.variables.add(x);
         this.variables.add(y);
+        this.variables.add(z);
         this.propagators = new ArrayList<>();
-        this.propagators.add(new PropLessOrEqualXY(variables));
     }
     
     @Override
@@ -49,15 +49,17 @@ public class LessOrEqualXY implements Constraint {
 
     @Override
     public Sat isSatisfied() {
-        if ( this.variables.get(0).isInstantiated() && this.variables.get(1).isInstantiated() ) {
-            if ( this.variables.get(0).getValue() <= this.variables.get(1).getValue() ) {
-                return Sat.SAT;
-            } else {
-                return Sat.UNSAT;
-            }
-        } else {
+        if ( !this.variables.get(0).isInstantiated() ||
+             !this.variables.get(1).isInstantiated() ||
+             !this.variables.get(2).isInstantiated() ) {
             return Sat.IDK;
+        } else if ( this.variables.get(0).getValue() == 
+                Math.max(this.variables.get(1).getValue(), this.variables.get(2).getValue()) ) {
+            return Sat.SAT;
+        } else {
+            return Sat.UNSAT;
         }
+        
     }
     
 }
