@@ -11,12 +11,12 @@ import com.althome.lightcspsolver.solver.variables.Variable;
  *
  * @author Arnaud
  */
-public class MinValueValueSelector implements ValueSelector {
+public class MaxValueSelector implements ValueSelector {
 
     @Override
     public Integer getValue(Variable variable) {
         if ( variable.isEmpty() ) return null;
-        else return variable.getLowerBound();
+        else return variable.getUpperBound();
     }
     
 }

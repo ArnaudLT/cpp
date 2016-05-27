@@ -3,28 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.althome.lightcspsolver.solver.constraints;
+package com.althome.lightcspsolver.solver.constraints.binary;
 
 import com.althome.lightcspsolver.solver.Sat;
-import com.althome.lightcspsolver.solver.constraints.propagators.Propagator;
+import com.althome.lightcspsolver.solver.constraints.Constraint;
+import com.althome.lightcspsolver.solver.constraints.Propagator;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
 
 /**
- * X <= Y
+ *
  * @author Arnaud
  */
-public class LessOrEqualXY implements Constraint {
+public class EqualXY implements Constraint {
 
     private ArrayList<Variable> variables;
     private ArrayList<Propagator> propagators;
     
-    public LessOrEqualXY(Variable x, Variable y) {
+    public EqualXY(Variable x, Variable y) {
         this.variables = new ArrayList<>();
         this.variables.add(x);
         this.variables.add(y);
         this.propagators = new ArrayList<>();
-        //this.propagators.add(null);
     }
     
     @Override
@@ -47,7 +47,7 @@ public class LessOrEqualXY implements Constraint {
     @Override
     public Sat isSatisfied() {
         if ( this.variables.get(0).isInstantiated() && this.variables.get(1).isInstantiated() ) {
-            if ( this.variables.get(0).getValue() <= this.variables.get(1).getValue() ) {
+            if ( this.variables.get(0).getValue() == this.variables.get(1).getValue() ) {
                 return Sat.SAT;
             } else {
                 return Sat.UNSAT;

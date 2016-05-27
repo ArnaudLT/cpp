@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.althome.lightcspsolver.solver.constraints.propagators;
+package com.althome.lightcspsolver.solver.constraints;
 
 /**
  *
  * @author Arnaud
  */
-public interface Propagator {
-    
-    public void propagate();
-    
+public enum ConstraintFactory {
+    ;
+        
 }

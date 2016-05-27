@@ -6,7 +6,6 @@
 package com.althome.lightcspsolver.solver.constraints;
 
 import com.althome.lightcspsolver.solver.Sat;
-import com.althome.lightcspsolver.solver.constraints.propagators.Propagator;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
 

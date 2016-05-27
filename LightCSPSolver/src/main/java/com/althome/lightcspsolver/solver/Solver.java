@@ -6,9 +6,9 @@
 package com.althome.lightcspsolver.solver;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
-import com.althome.lightcspsolver.solver.search.Search;
 import com.althome.lightcspsolver.solver.search.selector.InputOrderVariableSelector;
-import com.althome.lightcspsolver.solver.search.selector.MinValueValueSelector;
+import com.althome.lightcspsolver.solver.search.selector.MaxValueSelector;
+import com.althome.lightcspsolver.solver.search.selector.MinValueSelector;
 import com.althome.lightcspsolver.solver.search.selector.ValueSelector;
 import com.althome.lightcspsolver.solver.search.selector.VariableSelector;
 import com.althome.lightcspsolver.solver.variables.Variable;
@@ -32,7 +32,7 @@ public class Solver {
         this.variables = new ArrayList<>();
         this.constraints = new ArrayList<>();
         this.variableSelector = new InputOrderVariableSelector();
-        this.valueSelector = new MinValueValueSelector();
+        this.valueSelector = new MinValueSelector();
     }
     
     public void addVariable(Variable variable) {
@@ -51,35 +51,41 @@ public class Solver {
         this.constraints.add(constraint);
     }
     
-    public void solve() {
-        solve(this);
+    public Sat solve() {
+        return this.solve(0);
     }
     
-    
-    private boolean solve(Solver s) {
-        Sat status;
-        s.filter();
-        status = s.isASolution();
-        if ( status == Sat.SAT ) return true;
-        if ( status == Sat.UNSAT ) return false;
-        
-        // At least 1 variable is not instantiated.
-        Variable nextVar;
-        Integer nextValue;
-        while ( ( nextVar = s.variableSelector.getVariable(s.variables) ) != null ) {
-            while ( ( nextValue = s.valueSelector.getValue(nextVar) ) != null ) {
-                Domain dom = nextVar.getDomain().clone();
-                nextVar.instantiateTo(nextValue);
-                System.out.println(nextVar);
-                s.solve(s);
-                status = s.isASolution();
-                if ( status == Sat.SAT ) return true;
-                nextVar.restoreDomain(dom);
-                nextVar.removeValues(nextValue);
-            }
+    private Sat solve(int dig) {
+
+StringBuilder s = new StringBuilder();
+for (int i=0; i<dig; i++) { s.append(" "); }
+System.out.println(s.toString()+this.toStringOneLine());
+        this.filter();
+        Sat status = this.isASolution();
+        if (status == Sat.SAT) {
+System.out.println(this.toStringOneLine());
+            return Sat.SAT;
         }
-        
-        return false;
+        if (status == Sat.UNSAT) {
+            return Sat.UNSAT;
+        }
+        Variable var;
+        Integer value;
+        if ((var = this.variableSelector.getVariable(this.variables)) != null) {
+            Domain backtrackPrevVar = var.getDomain().clone();
+            while ((value = this.valueSelector.getValue(var)) != null) {
+                Domain domBackup = var.getDomain().clone();
+                var.instantiateTo(value);
+                Sat solved = this.solve(dig++);
+                if (solved == Sat.SAT) {
+                    return Sat.SAT;
+                }
+                var.restoreDomain(domBackup);
+                var.removeValues(value);
+            }
+            var.restoreDomain(backtrackPrevVar);
+        }
+        return Sat.UNSAT;
     }
             
             
@@ -116,6 +122,16 @@ public class Solver {
             s.append(v).append("\n");            
         }
         s.append(" ------------------------------ ");
+        return s.toString();
+    }
+    
+    public String toStringOneLine() {
+        StringBuilder s = new StringBuilder();
+        Sat satified = this.isASolution();
+        s.append(satified).append(" =>>> ");
+        for ( Variable v : this.variables ) {
+            s.append(v).append(" // ");            
+        }
         return s.toString();
     }
     
