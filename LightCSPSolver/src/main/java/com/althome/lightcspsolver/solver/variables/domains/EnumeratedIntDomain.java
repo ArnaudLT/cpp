@@ -23,7 +23,6 @@ public class EnumeratedIntDomain implements Domain {
     }
 
     private EnumeratedIntDomain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
@@ -101,6 +100,11 @@ public class EnumeratedIntDomain implements Domain {
         }
         dom.append("}");
         return dom.toString();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.values.isEmpty();
     }
 
 }

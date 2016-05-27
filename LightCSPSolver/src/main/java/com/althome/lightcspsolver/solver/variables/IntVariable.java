@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 public class IntVariable implements Variable {
     
-    private int id;
     private String name;
     private Domain domain;
     private ArrayList<Constraint> constaints;
@@ -26,8 +25,7 @@ public class IntVariable implements Variable {
         
     }
     
-    public IntVariable(int id, String name, int minValue, int maxValue, DomainType type) {
-        this.id = id;
+    public IntVariable(String name, int minValue, int maxValue, DomainType type) {
         this.name = name;
         switch (type) {
             case ENUMERATED : 
@@ -106,15 +104,10 @@ public class IntVariable implements Variable {
     @Override
     public IntVariable clone() {
         IntVariable clone = new IntVariable();
-        clone.id = this.id;
         clone.name = this.name;
         clone.constaints = this.constaints;
         clone.domain = this.domain.clone();
         return clone;
-    }
-    
-    public int getId() {
-        return this.id;
     }
     
     public String getName() {
@@ -129,5 +122,15 @@ public class IntVariable implements Variable {
         dom.append(" ]");
         return dom.toString();
     } 
+
+    @Override
+    public void restoreDomain(Domain d) {
+        this.domain = d;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.domain.isEmpty();
+    }
     
 }

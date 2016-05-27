@@ -5,6 +5,7 @@
  */
 package com.althome.lightcspsolver.solver.constraints;
 
+import com.althome.lightcspsolver.solver.Sat;
 import com.althome.lightcspsolver.solver.constraints.propagators.Propagator;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
@@ -44,10 +45,16 @@ public class NotEqualXY implements Constraint {
     }
 
     @Override
-    public boolean isSatisfied() {
-        return ( this.variables.get(0).isInstantiated() 
-              && this.variables.get(1).isInstantiated() 
-              && this.variables.get(0).getValue() != this.variables.get(1).getValue() );
+    public Sat isSatisfied() {
+        if ( this.variables.get(0).isInstantiated() && this.variables.get(1).isInstantiated() ) {
+            if ( this.variables.get(0).getValue() != this.variables.get(1).getValue() ) {
+                return Sat.SAT;
+            } else {
+                return Sat.UNSAT;
+            }
+        } else {
+            return Sat.IDK;
+        }
     }
     
 }

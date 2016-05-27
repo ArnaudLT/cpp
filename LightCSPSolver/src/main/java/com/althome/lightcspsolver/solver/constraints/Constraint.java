@@ -5,6 +5,7 @@
  */
 package com.althome.lightcspsolver.solver.constraints;
 
+import com.althome.lightcspsolver.solver.Sat;
 import com.althome.lightcspsolver.solver.constraints.propagators.Propagator;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
@@ -18,6 +19,6 @@ public interface Constraint {
     public ArrayList<Variable> getVariables();
     public ArrayList<Propagator> getPropagators();
     public void filter();
-    public boolean isSatisfied();
+    public Sat isSatisfied();
     
 }

@@ -40,4 +40,8 @@ public interface Variable {
     
     public Variable clone();
     
+    public void restoreDomain(Domain d);
+    
+    public boolean isEmpty();
+    
 }

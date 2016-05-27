@@ -93,4 +93,9 @@ public class BoundedIntDomain implements Domain {
         return dom.toString();
     }
 
+    @Override
+    public boolean isEmpty() {
+        return ( this.lowerBound > this.upperBound );
+    }
+
 }

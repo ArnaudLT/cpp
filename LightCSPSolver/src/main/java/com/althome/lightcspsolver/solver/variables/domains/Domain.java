@@ -29,4 +29,6 @@ public interface Domain {
     
     public Domain clone();
     
+    public boolean isEmpty();
+    
 }
