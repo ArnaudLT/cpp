@@ -27,14 +27,14 @@ public class PropNotEqualXY implements Propagator {
     @Override
     public boolean propagate() {
 
-        int deltaBefore = this.x.getCardinality() + this.x.getCardinality();
+        int deltaBefore = this.x.getCardinality() + this.y.getCardinality();
         if ( x.isInstantiated() ) {
             y.removeValues(x.getValue());
         }
         if ( y.isInstantiated() ) {
             x.removeValues(y.getValue());
         }
-        int deltaAfter = this.x.getCardinality() + this.x.getCardinality(); 
+        int deltaAfter = this.x.getCardinality() + this.y.getCardinality(); 
         
         return deltaAfter != deltaBefore;
     }

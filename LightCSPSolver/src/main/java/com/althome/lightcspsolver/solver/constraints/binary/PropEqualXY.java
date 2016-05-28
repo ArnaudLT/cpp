@@ -27,7 +27,7 @@ public class PropEqualXY implements Propagator {
     @Override
     public boolean propagate() {
         
-        int deltaBefore = this.x.getCardinality() + this.x.getCardinality();
+        int deltaBefore = this.x.getCardinality() + this.y.getCardinality();
         
         int ub = this.x.getUpperBound();
         for (int xv = this.x.getLowerBound(); xv <= ub; xv = this.x.nextValue(xv)) {
@@ -43,7 +43,7 @@ public class PropEqualXY implements Propagator {
             }
         }
         
-        int deltaAfter = this.x.getCardinality() + this.x.getCardinality(); 
+        int deltaAfter = this.x.getCardinality() + this.y.getCardinality(); 
         
         return (deltaBefore != deltaAfter);
     }

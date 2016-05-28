@@ -12,20 +12,20 @@ import com.althome.lightcspsolver.solver.variables.Variable;
 import java.util.ArrayList;
 
 /**
- * X >= Y
+ * X <= Y
  * @author Arnaud
  */
-public class GreaterOrEqualXY implements Constraint {
+public class LessXY implements Constraint {
 
     private ArrayList<Variable> variables;
     private ArrayList<Propagator> propagators;
     
-    public GreaterOrEqualXY(Variable x, Variable y) {
+    public LessXY(Variable x, Variable y) {
         this.variables = new ArrayList<>();
         this.variables.add(x);
         this.variables.add(y);
         this.propagators = new ArrayList<>();
-        this.propagators.add(new PropGreaterOrEqualXY(variables));
+        this.propagators.add(new PropLessXY(variables));
     }
     
     @Override
@@ -51,7 +51,7 @@ public class GreaterOrEqualXY implements Constraint {
     public Sat isSatisfied() {
         if ( this.variables.get(0).isEmpty() || this.variables.get(1).isEmpty() ) return Sat.UNSAT;
         if ( this.variables.get(0).isInstantiated() && this.variables.get(1).isInstantiated() ) {
-            if ( this.variables.get(0).getValue() >= this.variables.get(1).getValue() ) {
+            if ( this.variables.get(0).getValue() < this.variables.get(1).getValue() ) {
                 return Sat.SAT;
             } else {
                 return Sat.UNSAT;

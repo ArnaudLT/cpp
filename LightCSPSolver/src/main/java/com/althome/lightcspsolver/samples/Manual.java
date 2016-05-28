@@ -5,16 +5,9 @@
  */
 package com.althome.lightcspsolver.samples;
 
-import com.althome.lightcspsolver.solver.Solver;
-import com.althome.lightcspsolver.solver.constraints.Constraint;
-import com.althome.lightcspsolver.solver.constraints.binary.EqualXY;
-import com.althome.lightcspsolver.solver.constraints.binary.GreaterOrEqualXY;
-import com.althome.lightcspsolver.solver.constraints.binary.LessOrEqualXY;
-import com.althome.lightcspsolver.solver.constraints.binary.NotEqualXY;
-import com.althome.lightcspsolver.solver.constraints.nary.AllDifferent;
-import com.althome.lightcspsolver.solver.variables.IntVariable;
-import com.althome.lightcspsolver.solver.variables.Variable;
-import com.althome.lightcspsolver.solver.variables.VariableFactory;
+import com.althome.lightcspsolver.solver.*;
+import com.althome.lightcspsolver.solver.constraints.ConstraintFactory;
+import com.althome.lightcspsolver.solver.variables.*;
 import java.util.ArrayList;
 
 
@@ -28,15 +21,18 @@ public class Manual {
 
         Solver s = new Solver();
         
-        int size = 3;
+        int size = 100;
         ArrayList<Variable> vars = new ArrayList<Variable>();
         for (int i=0; i<size; i++) {
             vars.add(VariableFactory.enumerated("v"+i, 0, size-1, s));
         }
                       
         for (int i=1; i<size; i++) {
-            s.post(new GreaterOrEqualXY(vars.get(i-1), vars.get(i)));
-            s.post(new NotEqualXY(vars.get(i-1), vars.get(i)));
+            // Mauvais modele !
+            //s.post( ConstraintFactory.arith(vars.get(i-1), ">=", vars.get(i)) );
+            //s.post( ConstraintFactory.arith(vars.get(i-1), "!=", vars.get(i)) );
+            // Bon modele !
+            s.post( ConstraintFactory.arith(vars.get(i-1), ">", vars.get(i)) );
         }
         /*
         final int SIZE = 9;

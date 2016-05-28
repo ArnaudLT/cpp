@@ -13,12 +13,12 @@ import java.util.ArrayList;
  *
  * @author Arnaud
  */
-public class PropGreaterOrEqualXY implements Propagator {
+public class PropLessXY implements Propagator {
 
     
     private Variable x, y;
     
-    public PropGreaterOrEqualXY(ArrayList<Variable> variables) {
+    public PropLessXY(ArrayList<Variable> variables) {
         this.x = variables.get(0);
         this.y = variables.get(1);
     }
@@ -26,13 +26,14 @@ public class PropGreaterOrEqualXY implements Propagator {
     
     @Override
     public boolean propagate() {
-        int deltaBefore = this.x.getCardinality() + this.x.getCardinality();
+ 
+        int deltaBefore = this.x.getCardinality() + this.y.getCardinality();
 
-        this.x.updateLowerBoundTo(this.y.getLowerBound());
-        this.y.updateUpperBoundTo(this.x.getUpperBound());
+        this.x.updateUpperBoundTo(this.y.getUpperBound()-1);
+        this.y.updateLowerBoundTo(this.x.getLowerBound()+1);
             
-        int deltaAfter = this.x.getCardinality() + this.x.getCardinality(); 
-
+        int deltaAfter = this.x.getCardinality() + this.y.getCardinality(); 
+        
         return deltaBefore != deltaAfter;
     }
     

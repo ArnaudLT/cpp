@@ -59,9 +59,9 @@ public class Solver {
         ArrayList<Domain> backup = null;  
 StringBuilder s = new StringBuilder();
 for (int i=0; i<dig; i++) { s.append("  "); }
-System.out.println(s.toString()+this.toStringOneLine());
+//System.out.println(s.toString()+this.toStringOneLine());
         this.filter();
-//System.out.println("    Propag => "+this.toStringOneLine());
+//System.out.println(s.toString()+"Propag => "+this.toStringOneLine());
         Sat status = this.isASolution();
         if (status == Sat.SAT) {
 System.out.println(this.toStringOneLine());
@@ -72,12 +72,14 @@ System.out.println(this.toStringOneLine());
         }
         Variable var;
         Integer value;
+        dig++;
         if ((var = this.variableSelector.getVariable(this.variables)) != null) {
             Domain backtrackPrevVar = var.getDomain().clone();
             while ((value = this.valueSelector.getValue(var)) != null) {
                 backup = this.pushWorld();
                 var.instantiateTo(value);
-                Sat solved = this.solve(dig++);
+System.out.println(s.toString()+var);                
+                Sat solved = this.solve(dig);
                 if (solved == Sat.SAT) {
                     return Sat.SAT;
                 }

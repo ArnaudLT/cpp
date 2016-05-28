@@ -27,12 +27,12 @@ public class PropLessOrEqualXY implements Propagator {
     @Override
     public boolean propagate() {
  
-        int deltaBefore = this.x.getCardinality() + this.x.getCardinality();
+        int deltaBefore = this.x.getCardinality() + this.y.getCardinality();
 
-        this.x.updateUpperBoundTo(this.y.getLowerBound());
-        this.y.updateLowerBoundTo(this.x.getUpperBound());
+        this.x.updateUpperBoundTo(this.y.getUpperBound());
+        this.y.updateLowerBoundTo(this.x.getLowerBound());
             
-        int deltaAfter = this.x.getCardinality() + this.x.getCardinality(); 
+        int deltaAfter = this.x.getCardinality() + this.y.getCardinality(); 
         
         return deltaBefore != deltaAfter;
     }
