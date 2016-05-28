@@ -110,6 +110,7 @@ public class IntVariable implements Variable {
         return this.name;
     }
     
+    @Override
     public String toString() {
         StringBuilder dom = new StringBuilder("[ ");
         dom.append(this.name);

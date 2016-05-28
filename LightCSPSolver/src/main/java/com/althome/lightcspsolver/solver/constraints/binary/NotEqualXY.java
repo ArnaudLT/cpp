@@ -25,7 +25,7 @@ public class NotEqualXY implements Constraint {
         this.variables.add(x);
         this.variables.add(y);
         this.propagators = new ArrayList<>();
-        //this.propagators.add(null);
+        this.propagators.add(new PropNotEqualXY(variables));
     }
     
     @Override
@@ -49,6 +49,7 @@ public class NotEqualXY implements Constraint {
 
     @Override
     public Sat isSatisfied() {
+        if ( this.variables.get(0).isEmpty() || this.variables.get(1).isEmpty() ) return Sat.UNSAT;
         if ( this.variables.get(0).isInstantiated() && this.variables.get(1).isInstantiated() ) {
             if ( this.variables.get(0).getValue() != this.variables.get(1).getValue() ) {
                 return Sat.SAT;

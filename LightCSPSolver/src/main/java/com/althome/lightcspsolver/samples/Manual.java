@@ -8,8 +8,9 @@ package com.althome.lightcspsolver.samples;
 import com.althome.lightcspsolver.solver.Solver;
 import com.althome.lightcspsolver.solver.constraints.Constraint;
 import com.althome.lightcspsolver.solver.constraints.binary.EqualXY;
-import com.althome.lightcspsolver.solver.constraints.binary.GreaterXY;
+import com.althome.lightcspsolver.solver.constraints.binary.GreaterOrEqualXY;
 import com.althome.lightcspsolver.solver.constraints.binary.LessOrEqualXY;
+import com.althome.lightcspsolver.solver.constraints.binary.NotEqualXY;
 import com.althome.lightcspsolver.solver.constraints.nary.AllDifferent;
 import com.althome.lightcspsolver.solver.variables.IntVariable;
 import com.althome.lightcspsolver.solver.variables.Variable;
@@ -27,14 +28,15 @@ public class Manual {
 
         Solver s = new Solver();
         
-        int size = 100;
+        int size = 3;
         ArrayList<Variable> vars = new ArrayList<Variable>();
         for (int i=0; i<size; i++) {
             vars.add(VariableFactory.enumerated("v"+i, 0, size-1, s));
         }
                       
         for (int i=1; i<size; i++) {
-            s.post(new GreaterXY(vars.get(i-1), vars.get(i)));
+            s.post(new GreaterOrEqualXY(vars.get(i-1), vars.get(i)));
+            s.post(new NotEqualXY(vars.get(i-1), vars.get(i)));
         }
         /*
         final int SIZE = 9;

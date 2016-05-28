@@ -27,14 +27,12 @@ public class Solver {
     private VariableSelector variableSelector;
     private ValueSelector valueSelector;
     
-    private ArrayList<Domain> backup;
     
     public Solver() {
         this.variables = new ArrayList<>();
         this.constraints = new ArrayList<>();
         this.variableSelector = new InputOrderVariableSelector();
         this.valueSelector = new MinValueSelector();
-        this.backup = new ArrayList<>();
     }
     
     public void addVariable(Variable variable) {
@@ -58,12 +56,12 @@ public class Solver {
     }
     
     private Sat solve(int dig) {
-
-//StringBuilder s = new StringBuilder();
-//for (int i=0; i<dig; i++) { s.append(" "); }
-//System.out.println(s.toString()+this.toStringOneLine());
+        ArrayList<Domain> backup = null;  
+StringBuilder s = new StringBuilder();
+for (int i=0; i<dig; i++) { s.append("  "); }
+System.out.println(s.toString()+this.toStringOneLine());
         this.filter();
-//System.out.println("Propag => "+this.toStringOneLine());
+//System.out.println("    Propag => "+this.toStringOneLine());
         Sat status = this.isASolution();
         if (status == Sat.SAT) {
 System.out.println(this.toStringOneLine());
@@ -77,13 +75,13 @@ System.out.println(this.toStringOneLine());
         if ((var = this.variableSelector.getVariable(this.variables)) != null) {
             Domain backtrackPrevVar = var.getDomain().clone();
             while ((value = this.valueSelector.getValue(var)) != null) {
-                this.pushWorld();
+                backup = this.pushWorld();
                 var.instantiateTo(value);
                 Sat solved = this.solve(dig++);
                 if (solved == Sat.SAT) {
                     return Sat.SAT;
                 }
-                this.popWorld();
+                this.popWorld(backup);
                 var.removeValues(value);
             }
             var.restoreDomain(backtrackPrevVar);
@@ -91,18 +89,20 @@ System.out.println(this.toStringOneLine());
         return Sat.UNSAT;
     }
     
-    private void pushWorld() {
-        this.backup.clear();
+    private ArrayList<Domain> pushWorld() {
+        ArrayList<Domain> backup = new ArrayList<Domain>(this.variables.size());
         for ( Variable v : this.variables ) {
-            this.backup.add(v.getDomain().clone());
+            backup.add(v.getDomain().clone());
         }
+        return backup;
     }
     
-    private void popWorld() {
+    private void popWorld(ArrayList<Domain> backup) {
         for ( int i=0; i< this.variables.size(); i++ ) {
-            this.variables.get(i).restoreDomain(this.backup.get(i));
+            this.variables.get(i).
+                    restoreDomain(backup.get(i));
         }
-        this.backup.clear();
+        //backup.clear();
     }
             
     private void filter() {

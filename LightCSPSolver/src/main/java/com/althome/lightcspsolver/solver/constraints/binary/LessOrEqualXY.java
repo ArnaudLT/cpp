@@ -49,6 +49,7 @@ public class LessOrEqualXY implements Constraint {
 
     @Override
     public Sat isSatisfied() {
+        if ( this.variables.get(0).isEmpty() || this.variables.get(1).isEmpty() ) return Sat.UNSAT;
         if ( this.variables.get(0).isInstantiated() && this.variables.get(1).isInstantiated() ) {
             if ( this.variables.get(0).getValue() <= this.variables.get(1).getValue() ) {
                 return Sat.SAT;
