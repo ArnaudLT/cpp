@@ -7,6 +7,7 @@ package com.althome.lightcspsolver.solver.variables;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
 import com.althome.lightcspsolver.solver.variables.domains.Domain;
+import java.util.ArrayList;
 
 /**
  *
@@ -49,5 +50,7 @@ public interface Variable {
     public int nextValue(int value);
     
     public int previousValue(int value);
+    
+    public ArrayList<Constraint> getConstraints();
     
 }

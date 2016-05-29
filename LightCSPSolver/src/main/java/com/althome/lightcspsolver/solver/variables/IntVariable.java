@@ -144,5 +144,10 @@ public class IntVariable implements Variable {
     public int previousValue(int value) {
         return this.domain.previousValue(value);
     }
+
+    @Override
+    public ArrayList<Constraint> getConstraints() {
+        return this.constaints;
+    }
     
 }

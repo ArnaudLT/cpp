@@ -50,7 +50,10 @@ public class Solver {
     public void post(Constraint... constraints) {
         for (Constraint c : constraints) {
             this.constraints.add(c);
-    }
+            for (Variable v : c.getVariables()) {
+                v.addConstraint(c);
+            }
+        }
     }
     
     public Sat solve() {

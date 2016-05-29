@@ -11,8 +11,7 @@ import com.althome.lightcspsolver.solver.Solver;
  *
  * @author Arnaud
  */
-public enum VariableFactory {
-    ;
+public class VariableFactory {
     
     public static Variable enumerated(String name, int lowerBound, int upperBound, Solver solver) {
         IntVariable v = new IntVariable(name, lowerBound, upperBound, DomainType.ENUMERATED);
