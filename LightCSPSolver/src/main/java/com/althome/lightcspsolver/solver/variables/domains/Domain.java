@@ -35,4 +35,6 @@ public interface Domain {
     
     public int nextValue(int value);
     
+    public int previousValue(int value);
+    
 }

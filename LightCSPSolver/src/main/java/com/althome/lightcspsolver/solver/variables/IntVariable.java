@@ -139,5 +139,10 @@ public class IntVariable implements Variable {
     public int nextValue(int value) {
         return this.domain.nextValue(value);
     }
+
+    @Override
+    public int previousValue(int value) {
+        return this.domain.previousValue(value);
+    }
     
 }

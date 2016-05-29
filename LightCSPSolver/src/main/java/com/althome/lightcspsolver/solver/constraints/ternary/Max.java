@@ -49,6 +49,7 @@ public class Max implements Constraint {
 
     @Override
     public Sat isSatisfied() {
+        if ( this.variables.get(0).isEmpty() || this.variables.get(1).isEmpty() ) return Sat.UNSAT;
         if ( !this.variables.get(0).isInstantiated() ||
              !this.variables.get(1).isInstantiated() ||
              !this.variables.get(2).isInstantiated() ) {

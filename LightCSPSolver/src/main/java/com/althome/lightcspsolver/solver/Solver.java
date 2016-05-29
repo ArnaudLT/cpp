@@ -47,8 +47,10 @@ public class Solver {
         this.valueSelector = selector;
     }
     
-    public void post(Constraint constraint) {
-        this.constraints.add(constraint);
+    public void post(Constraint... constraints) {
+        for (Constraint c : constraints) {
+            this.constraints.add(c);
+    }
     }
     
     public Sat solve() {
@@ -56,7 +58,6 @@ public class Solver {
     }
     
     private Sat solve(int dig) {
-        ArrayList<Domain> backup = null;  
 StringBuilder s = new StringBuilder();
 for (int i=0; i<dig; i++) { s.append("  "); }
 //System.out.println(s.toString()+this.toStringOneLine());
@@ -76,7 +77,7 @@ System.out.println(this.toStringOneLine());
         if ((var = this.variableSelector.getVariable(this.variables)) != null) {
             Domain backtrackPrevVar = var.getDomain().clone();
             while ((value = this.valueSelector.getValue(var)) != null) {
-                backup = this.pushWorld();
+                ArrayList<Domain> backup = this.pushWorld();
                 var.instantiateTo(value);
 System.out.println(s.toString()+var);                
                 Sat solved = this.solve(dig);

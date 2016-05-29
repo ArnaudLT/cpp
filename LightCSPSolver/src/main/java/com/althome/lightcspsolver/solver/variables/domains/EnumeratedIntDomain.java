@@ -126,6 +126,16 @@ public class EnumeratedIntDomain implements Domain {
         }
     }
 
+    @Override
+    public int previousValue(int value) {
+        int res = this.values.previousSetBit(value-1-this.offset) + this.offset;
+        if (  res < this.offset ) {
+            return Integer.MAX_VALUE;
+        } else {
+            return res;
+        }
+    }
+
     
     
 }

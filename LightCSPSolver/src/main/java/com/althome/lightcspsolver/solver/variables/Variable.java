@@ -48,4 +48,6 @@ public interface Variable {
     
     public int nextValue(int value);
     
+    public int previousValue(int value);
+    
 }

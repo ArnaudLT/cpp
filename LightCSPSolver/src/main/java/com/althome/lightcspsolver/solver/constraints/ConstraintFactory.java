@@ -9,7 +9,10 @@ import com.althome.lightcspsolver.solver.constraints.binary.EqualXY;
 import com.althome.lightcspsolver.solver.constraints.binary.LessOrEqualXY;
 import com.althome.lightcspsolver.solver.constraints.binary.LessXY;
 import com.althome.lightcspsolver.solver.constraints.binary.NotEqualXY;
+import com.althome.lightcspsolver.solver.constraints.nary.AllDifferent;
+import com.althome.lightcspsolver.solver.constraints.ternary.Min;
 import com.althome.lightcspsolver.solver.variables.Variable;
+import java.util.ArrayList;
 
 /**
  *
@@ -36,4 +39,17 @@ public class ConstraintFactory {
         }
         return c;
     }
+    
+    public static Constraint allDifferent(ArrayList<Variable> variables) {
+        return new AllDifferent(variables);
+    }
+    
+    public static Constraint min(Variable min, Variable x, Variable y) {
+        return new Min(min, x, y);
+    }
+    
+    public static Constraint max(Variable max, Variable x, Variable y) {
+        return new Min(max, x, y);
+    }
+    
 }
