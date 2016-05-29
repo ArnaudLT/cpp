@@ -6,6 +6,7 @@
 package com.althome.lightcspsolver.solver;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
+import com.althome.lightcspsolver.solver.constraints.Propagator;
 import com.althome.lightcspsolver.solver.search.selector.InputOrderVariableSelector;
 import com.althome.lightcspsolver.solver.search.selector.MaxValueSelector;
 import com.althome.lightcspsolver.solver.search.selector.MinValueSelector;
@@ -57,14 +58,16 @@ public class Solver {
     }
     
     public Sat solve() {
-        return this.solve(0);
+        this.initialPropagation();
+        return this.solve(0, null);
     }
     
-    private Sat solve(int dig) {
+    private Sat solve(int dig, Variable vMove) {
 StringBuilder s = new StringBuilder();
-for (int i=0; i<dig; i++) { s.append("  "); }
+//for (int i=0; i<dig; i++) { s.append("  "); }
 //System.out.println(s.toString()+this.toStringOneLine());
-        this.filter();
+        this.AC3Propagation(vMove);
+        //this.initialPropagation();
 //System.out.println(s.toString()+"Propag => "+this.toStringOneLine());
         Sat status = this.isASolution();
         if (status == Sat.SAT) {
@@ -82,8 +85,8 @@ System.out.println(this.toStringOneLine());
             while ((value = this.valueSelector.getValue(var)) != null) {
                 ArrayList<Domain> backup = this.pushWorld();
                 var.instantiateTo(value);
-System.out.println(s.toString()+var);                
-                Sat solved = this.solve(dig);
+//System.out.println(s.toString()+var);                
+                Sat solved = this.solve(dig, var);
                 if (solved == Sat.SAT) {
                     return Sat.SAT;
                 }
@@ -108,10 +111,9 @@ System.out.println(s.toString()+var);
             this.variables.get(i).
                     restoreDomain(backup.get(i));
         }
-        //backup.clear();
     }
             
-    private void filter() {
+    private void initialPropagation() {
         boolean impact;
         do {
             impact = false;
@@ -121,6 +123,32 @@ System.out.println(s.toString()+var);
         } while (impact);
         
         
+    }
+    
+    // P.O.C.
+    //   - cstrList => doublons !
+    //   - 
+    private void AC3Propagation(Variable vMove) {
+        Constraint cstr = null;
+        ArrayList<Constraint> cstrList = new ArrayList<>(this.constraints.size());
+        // initialisation
+        if ( vMove != null ) cstrList.addAll(vMove.getConstraints());
+        while ( !cstrList.isEmpty() ) {
+            cstr = cstrList.remove(0);
+            if ( cstr.filter() ) {
+                // TODO check empty possible domain
+                for (Variable vj : cstr.getVariables()) {
+                    if ( vj != vMove ) {
+                        for (Constraint cj : vj.getConstraints() ) {
+                            if ( cj != cstr ) {
+                                cstrList.add(cj);
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
     }
     
     private boolean isALeaf() {
