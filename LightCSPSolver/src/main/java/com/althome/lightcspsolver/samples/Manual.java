@@ -22,7 +22,7 @@ public class Manual {
         Solver s = new Solver();
         
         
-        int size = 100;
+        int size = 1000;
         ArrayList<Variable> vars = new ArrayList<Variable>();
         for (int i=0; i<size; i++) {
             vars.add(VariableFactory.enumerated("v"+i, 0, size-1, s));
@@ -33,7 +33,7 @@ public class Manual {
             //s.post( ConstraintFactory.arith(vars.get(i-1), ">=", vars.get(i)) );
             //s.post( ConstraintFactory.arith(vars.get(i-1), "!=", vars.get(i)) );
             // Bon modele !
-            s.post( ConstraintFactory.arith(vars.get(i-1), ">", vars.get(i)) );
+            s.post( ConstraintFactory.arith(vars.get(i-1), "=", vars.get(i)) );
         }
         
         

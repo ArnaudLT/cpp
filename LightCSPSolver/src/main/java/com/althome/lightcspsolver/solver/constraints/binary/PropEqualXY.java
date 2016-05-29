@@ -28,14 +28,16 @@ public class PropEqualXY implements Propagator {
     public boolean propagate() {
         
         int deltaBefore = this.x.getCardinality() + this.y.getCardinality();
-        
+        // bounds
+        this.x.updateLowerBoundTo(this.y.getLowerBound());
+        this.y.updateUpperBoundTo(this.x.getUpperBound());
+        // holes
         int ub = this.x.getUpperBound();
         for (int xv = this.x.getLowerBound(); xv <= ub; xv = this.x.nextValue(xv)) {
             if ( ! this.y.contains(xv) ) {
                 this.x.removeValues(xv);
             }
         }
-        
         ub = this.y.getUpperBound();
         for (int yv = this.y.getLowerBound(); yv <= ub; yv = this.y.nextValue(yv)) {
             if ( ! this.x.contains(yv) ) {
