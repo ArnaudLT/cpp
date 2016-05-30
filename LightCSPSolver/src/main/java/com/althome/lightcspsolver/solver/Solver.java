@@ -6,11 +6,11 @@
 package com.althome.lightcspsolver.solver;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
-import com.althome.lightcspsolver.solver.search.selector.InputOrderVariableSelector;
-import com.althome.lightcspsolver.solver.search.selector.MaxValueSelector;
-import com.althome.lightcspsolver.solver.search.selector.MinValueSelector;
-import com.althome.lightcspsolver.solver.search.selector.ValueSelector;
-import com.althome.lightcspsolver.solver.search.selector.VariableSelector;
+import com.althome.lightcspsolver.solver.search.selectors.InputOrderVariableSelector;
+import com.althome.lightcspsolver.solver.search.selectors.MaxValueSelector;
+import com.althome.lightcspsolver.solver.search.selectors.MinValueSelector;
+import com.althome.lightcspsolver.solver.search.selectors.ValueSelector;
+import com.althome.lightcspsolver.solver.search.selectors.VariableSelector;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import com.althome.lightcspsolver.solver.variables.domains.Domain;
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ System.out.println(this.toStringOneLine());
             while ((value = this.valueSelector.getValue(var)) != null) {
                 ArrayList<Domain> backup = this.pushWorld();
                 var.instantiateTo(value);
-System.out.println(s.toString()+var);                
+//System.out.println(s.toString()+var);                
                 Sat solved = this.solve(dig);
                 if (solved == Sat.SAT) {
                     return Sat.SAT;
