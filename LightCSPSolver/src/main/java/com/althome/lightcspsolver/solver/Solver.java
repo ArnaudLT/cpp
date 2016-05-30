@@ -12,9 +12,12 @@ import com.althome.lightcspsolver.solver.search.selector.MaxValueSelector;
 import com.althome.lightcspsolver.solver.search.selector.MinValueSelector;
 import com.althome.lightcspsolver.solver.search.selector.ValueSelector;
 import com.althome.lightcspsolver.solver.search.selector.VariableSelector;
+import com.althome.lightcspsolver.solver.utils.Pair;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import com.althome.lightcspsolver.solver.variables.domains.Domain;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 /**
  *
@@ -66,8 +69,7 @@ public class Solver {
 StringBuilder s = new StringBuilder();
 //for (int i=0; i<dig; i++) { s.append("  "); }
 //System.out.println(s.toString()+this.toStringOneLine());
-        this.AC3Propagation(vMove);
-        //this.initialPropagation();
+        this.initialPropagation();
 //System.out.println(s.toString()+"Propag => "+this.toStringOneLine());
         Sat status = this.isASolution();
         if (status == Sat.SAT) {
@@ -129,26 +131,7 @@ System.out.println(this.toStringOneLine());
     //   - cstrList => doublons !
     //   - 
     private void AC3Propagation(Variable vMove) {
-        Constraint cstr = null;
-        ArrayList<Constraint> cstrList = new ArrayList<>(this.constraints.size());
-        // initialisation
-        if ( vMove != null ) cstrList.addAll(vMove.getConstraints());
-        while ( !cstrList.isEmpty() ) {
-            cstr = cstrList.remove(0);
-            if ( cstr.filter() ) {
-                // TODO check empty possible domain
-                for (Variable vj : cstr.getVariables()) {
-                    if ( vj != vMove ) {
-                        for (Constraint cj : vj.getConstraints() ) {
-                            if ( cj != cstr ) {
-                                cstrList.add(cj);
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
+
     }
     
     private boolean isALeaf() {
