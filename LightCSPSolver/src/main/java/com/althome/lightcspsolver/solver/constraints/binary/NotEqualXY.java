@@ -15,27 +15,15 @@ import java.util.ArrayList;
  * X != Y
  * @author Arnaud
  */
-public class NotEqualXY implements Constraint {
-
-    private ArrayList<Variable> variables;
-    private ArrayList<Propagator> propagators;
+public class NotEqualXY extends Constraint {
     
     public NotEqualXY(Variable x, Variable y) {
+        super();
         this.variables = new ArrayList<>();
         this.variables.add(x);
         this.variables.add(y);
         this.propagators = new ArrayList<>();
         this.propagators.add(new PropNotEqualXY(variables));
-    }
-    
-    @Override
-    public ArrayList<Variable> getVariables() {
-        return this.variables; 
-    }
-
-    @Override
-    public ArrayList<Propagator> getPropagators() {
-        return this.propagators;
     }
 
     @Override
@@ -60,5 +48,5 @@ public class NotEqualXY implements Constraint {
             return Sat.IDK;
         }
     }
-    
+
 }

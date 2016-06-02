@@ -13,11 +13,34 @@ import java.util.ArrayList;
  *
  * @author Arnaud
  */
-public interface Constraint {
+public abstract class Constraint {
     
-    public ArrayList<Variable> getVariables();
-    public ArrayList<Propagator> getPropagators();
-    public boolean filter();
-    public Sat isSatisfied();
+    protected ArrayList<Variable> variables;
+    protected ArrayList<Propagator> propagators;
+    protected boolean inPropagationQueue;
+    
+    public Constraint() {
+        
+    }
+    
+    public ArrayList<Variable> getVariables() {
+        return this.variables;
+    }
+    
+    public ArrayList<Propagator> getPropagators() {
+        return this.propagators;
+    }
+    
+    public void setInPropagationQueue(boolean isInPQ) {
+        this.inPropagationQueue = isInPQ;
+    }
+    
+    public boolean isInPropagationQueue() {
+        return this.inPropagationQueue;
+    }
+    
+    public abstract boolean filter();
+    
+    public abstract Sat isSatisfied();
     
 }

@@ -6,14 +6,19 @@
 package com.althome.lightcspsolver.solver;
 
 import com.althome.lightcspsolver.solver.constraints.Constraint;
+import com.althome.lightcspsolver.solver.constraints.Propagator;
 import com.althome.lightcspsolver.solver.search.selectors.InputOrderVariableSelector;
 import com.althome.lightcspsolver.solver.search.selectors.MaxValueSelector;
 import com.althome.lightcspsolver.solver.search.selectors.MinValueSelector;
 import com.althome.lightcspsolver.solver.search.selectors.ValueSelector;
 import com.althome.lightcspsolver.solver.search.selectors.VariableSelector;
+import com.althome.lightcspsolver.solver.utils.Pair;
 import com.althome.lightcspsolver.solver.variables.Variable;
 import com.althome.lightcspsolver.solver.variables.domains.Domain;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -57,33 +62,29 @@ public class Solver {
     }
     
     public Sat solve() {
-        return this.solve(0);
+        return this.solve(null, 0);
     }
     
-    private Sat solve(int dig) {
-StringBuilder s = new StringBuilder();
-for (int i=0; i<dig; i++) { s.append("  "); }
+    private Sat solve(Variable move, int depth) {
+//StringBuilder s = new StringBuilder();
+//for (int i=0; i<depth; i++) { s.append("  "); }
 //System.out.println(s.toString()+this.toStringOneLine());
-        this.filter();
+        this.brainlessPropagation();
+        //this.brainlessPropagation();
 //System.out.println(s.toString()+"Propag => "+this.toStringOneLine());
         Sat status = this.isASolution();
-        if (status == Sat.SAT) {
-System.out.println(this.toStringOneLine());
-            return Sat.SAT;
-        }
-        if (status == Sat.UNSAT) {
-            return Sat.UNSAT;
-        }
+        if (status == Sat.SAT) { /*System.out.println(this.toStringOneLine());*/ return Sat.SAT; }
+        if (status == Sat.UNSAT) { return Sat.UNSAT; }
         Variable var;
         Integer value;
-        dig++;
+        depth++;
         if ((var = this.variableSelector.getVariable(this.variables)) != null) {
             Domain backtrackPrevVar = var.getDomain().clone();
             while ((value = this.valueSelector.getValue(var)) != null) {
                 ArrayList<Domain> backup = this.pushWorld();
                 var.instantiateTo(value);
 //System.out.println(s.toString()+var);                
-                Sat solved = this.solve(dig);
+                Sat solved = this.solve(var, depth);
                 if (solved == Sat.SAT) {
                     return Sat.SAT;
                 }
@@ -93,6 +94,22 @@ System.out.println(this.toStringOneLine());
             var.restoreDomain(backtrackPrevVar);
         }
         return Sat.UNSAT;
+    }
+    
+    private void brainlessPropagation() {
+        boolean impact;
+        do {
+            impact = false;
+            for ( Constraint c : this.constraints ) {
+                impact |= c.filter();
+            }
+        } while (impact);
+    }
+    
+    private void aBetterPropagation() {
+        ArrayList<Propagator> queue = new ArrayList<Propagator>();
+        
+        
     }
     
     private ArrayList<Domain> pushWorld() {
@@ -109,18 +126,6 @@ System.out.println(this.toStringOneLine());
                     restoreDomain(backup.get(i));
         }
         //backup.clear();
-    }
-            
-    private void filter() {
-        boolean impact;
-        do {
-            impact = false;
-            for ( Constraint c : this.constraints ) {
-                impact |= c.filter();
-            }
-        } while (impact);
-        
-        
     }
     
     private boolean isALeaf() {

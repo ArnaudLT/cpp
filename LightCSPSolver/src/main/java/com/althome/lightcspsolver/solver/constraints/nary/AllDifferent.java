@@ -15,24 +15,12 @@ import java.util.ArrayList;
  *
  * @author Arnaud
  */
-public class AllDifferent implements Constraint {
-
-    private ArrayList<Variable> variables;
-    private ArrayList<Propagator> propagators;
+public class AllDifferent extends Constraint {
     
     public AllDifferent(ArrayList<Variable> variables) {
+        super();
         this.variables = variables;
         this.propagators = new ArrayList<>();
-    }
-    
-    @Override
-    public ArrayList<Variable> getVariables() {
-        return this.variables;
-    }
-
-    @Override
-    public ArrayList<Propagator> getPropagators() {
-        return this.propagators;
     }
 
     @Override
@@ -63,5 +51,5 @@ public class AllDifferent implements Constraint {
         }
         return Sat.IDK;
     }
-    
+
 }

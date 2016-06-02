@@ -15,27 +15,16 @@ import java.util.ArrayList;
  * X <= Y
  * @author Arnaud
  */
-public class LessOrEqualXY implements Constraint {
+public class LessOrEqualXY extends Constraint {
 
-    private ArrayList<Variable> variables;
-    private ArrayList<Propagator> propagators;
     
     public LessOrEqualXY(Variable x, Variable y) {
+        super();
         this.variables = new ArrayList<>();
         this.variables.add(x);
         this.variables.add(y);
         this.propagators = new ArrayList<>();
         this.propagators.add(new PropLessOrEqualXY(variables));
-    }
-    
-    @Override
-    public ArrayList<Variable> getVariables() {
-        return this.variables; 
-    }
-
-    @Override
-    public ArrayList<Propagator> getPropagators() {
-        return this.propagators;
     }
 
     @Override
@@ -60,5 +49,5 @@ public class LessOrEqualXY implements Constraint {
             return Sat.IDK;
         }
     }
-    
+
 }

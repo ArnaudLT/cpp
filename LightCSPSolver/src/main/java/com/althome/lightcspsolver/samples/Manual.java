@@ -21,18 +21,7 @@ public class Manual {
     public static void main(String[] args) {
 
         Solver s = new Solver();
-        /*
-        Variable x1 = VariableFactory.enumerated("x1", 0, 3, s);
-        Variable x2 = VariableFactory.enumerated("x3", 0, 3, s);
-        Variable x3 = VariableFactory.enumerated("x2", 0, 3, s);
-        
-        Constraint c1 = ConstraintFactory.arith(x1, ">", x2);
-        Constraint c2 = ConstraintFactory.arith(x2, "<", x3);
-        Constraint c3 = ConstraintFactory.arith(x1, "!=", x3);
-        
-        s.post(c1, c2, c3);
-        */
-        
+
         
         int size = 20;
         ArrayList<Variable> vars = new ArrayList<Variable>();

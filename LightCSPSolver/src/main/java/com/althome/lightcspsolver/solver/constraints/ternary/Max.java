@@ -15,27 +15,15 @@ import java.util.ArrayList;
  * X = MIN(Y,Z)
  * @author Arnaud
  */
-public class Max implements Constraint {
+public class Max extends Constraint {
 
-    private ArrayList<Variable> variables;
-    private ArrayList<Propagator> propagators;
-    
     public Max(Variable x, Variable y, Variable z) {
+        super();
         this.variables = new ArrayList<>();
         this.variables.add(x);
         this.variables.add(y);
         this.variables.add(z);
         this.propagators = new ArrayList<>();
-    }
-    
-    @Override
-    public ArrayList<Variable> getVariables() {
-        return this.variables; 
-    }
-
-    @Override
-    public ArrayList<Propagator> getPropagators() {
-        return this.propagators;
     }
 
     @Override
@@ -60,7 +48,6 @@ public class Max implements Constraint {
         } else {
             return Sat.UNSAT;
         }
-        
     }
-    
+
 }
